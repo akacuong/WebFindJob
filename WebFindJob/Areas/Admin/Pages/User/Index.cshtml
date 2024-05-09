@@ -1,0 +1,47 @@
+﻿    @page "/admin/users"
+    @model WebFindJob.Areas.Admin.Pages.User.IndexModel
+    @{
+        ViewData["Title"] = "User Role List";
+    }
+    <h2>@ViewData["Title"]</h2>
+    <partial name="_StatusMessage" model="@Model.StatusMessage"></partial>
+    <table class="table">
+        <tr>
+            <th>User Name</th>
+            <th>Id</th>
+            <th>Role</th>
+            <th>Action</th>
+        </tr>
+    @foreach (var user in Model.UsersWithRoles)
+        {
+            <tr>
+                <td>@user.UserName</td>
+                @if (@user.UserId == @user.Seeker)
+                {
+                <td>Seeker with Id=@user.Seeker</td>
+                }
+               @if (@user.UserId == @user.Recruiter)
+               {
+                <td>Recruiter with Id=@user.Recruiter</td>
+               }
+               @if (@user.UserId != @user.Seeker && @user.UserId != @user.Recruiter)
+                {
+                <td></td>
+               }
+            <td>
+                @if (string.IsNullOrEmpty(user.RoleNames))
+                {
+                    <a class="text-dark" asp-page="./AddRole" asp-route-id="@user.UserId">+ Add roles</a>
+                }
+                else{
+                <a asp-page="./AddRole" asp-route-id="@user.UserId">@user.RoleNames</a>
+                }
+                </td>
+                <td>
+                <a class="btn btn-success btn-sm" asp-page="./ChangePassword" asp-route-id="@user.UserId">Set Password</a>            
+                </td>             
+
+            </tr>
+        }
+
+    </table>
